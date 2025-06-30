@@ -17,6 +17,7 @@ class AppDimensions {
   static const double spacing26 = 26.0;
   static const double spacing28 = 28.0;
   static const double spacing32 = 32.0;
+  
   static const double spacing100 = 100.0;
 
   // Border Radius

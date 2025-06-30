@@ -48,9 +48,5 @@ class AppStrings {
   static const String peaceLily = 'Barış Çiçeği';
   static const String cactus = 'Kaktüsüm';
 
-  // Plant Health Status
-  static const String newLeaf = 'Yeni yaprak çıkarıyor 🌱';
-  static const String needsWater = 'Biraz susuz 💧';
-  static const String lovingSun = 'Güneşten memnun ☀️';
-  static const String growthMode = 'Büyüme modunda 📈';
+  
 } 

@@ -11,6 +11,7 @@ import '../widgets/plant_card_widget.dart';
 import '../widgets/task_card_widget.dart';
 import '../widgets/tip_card_widget.dart';
 import '../widgets/weather_card_widget.dart';
+import 'discover_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -89,7 +90,6 @@ class _HomePageState extends State<HomePage> {
               final plant = plants[index];
               return PlantCardWidget(
                 plantName: plant['name']!,
-                healthStatus: plant['health']!,
                 emoji: plant['image']!,
                 backgroundColor: plant['color'] as Color,
               );
@@ -104,25 +104,24 @@ class _HomePageState extends State<HomePage> {
     return [
       {
         'name': AppStrings.snakePlant,
-        'health': AppStrings.newLeaf,
+
         'image': '🐍',
         'color': AppColors.plantCard1,
       },
       {
         'name': AppStrings.zzPlant,
-        'health': AppStrings.needsWater,
         'image': '🌿',
         'color': AppColors.plantCard2,
       },
       {
         'name': AppStrings.peaceLily,
-        'health': AppStrings.lovingSun,
+
         'image': '🕊️',
         'color': AppColors.plantCard3,
       },
       {
         'name': AppStrings.cactus,
-        'health': AppStrings.growthMode,
+
         'image': '🌵',
         'color': AppColors.plantCard4,
       },
@@ -233,21 +232,48 @@ class _HomePageState extends State<HomePage> {
               icon: Icons.home_rounded,
               label: AppStrings.navHome,
               isActive: true,
+              onTap: () {
+                // Zaten ana sayfadayız
+              },
             ),
             NavigationItemWidget(
               icon: Icons.search_rounded,
               label: AppStrings.navDiscover,
               isActive: false,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const DiscoverPage(),
+                  ),
+                );
+              },
             ),
             NavigationItemWidget(
               icon: Icons.camera_alt_rounded,
               label: AppStrings.navGarden,
               isActive: false,
+              onTap: () {
+                // Garden sayfası henüz oluşturulmadı
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Bahçe sayfası yakında geliyor!'),
+                  ),
+                );
+              },
             ),
             NavigationItemWidget(
               icon: Icons.person_rounded,
               label: AppStrings.navProfile,
               isActive: false,
+              onTap: () {
+                // Profile sayfası henüz oluşturulmadı
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Profil sayfası yakında geliyor!'),
+                  ),
+                );
+              },
             ),
           ],
         ),

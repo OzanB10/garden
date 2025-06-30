@@ -6,14 +6,12 @@ import '../../core/constants/app_dimensions.dart';
 
 class PlantCardWidget extends StatelessWidget {
   final String plantName;
-  final String healthStatus;
   final String emoji;
   final Color backgroundColor;
 
   const PlantCardWidget({
     super.key,
     required this.plantName,
-    required this.healthStatus,
     required this.emoji,
     required this.backgroundColor,
   });
@@ -44,8 +42,6 @@ class PlantCardWidget extends StatelessWidget {
           _buildPlantImage(),
           const SizedBox(height: AppDimensions.spacing14),
           _buildPlantName(),
-          const SizedBox(height: AppDimensions.spacing6),
-          _buildHealthStatus(),
         ],
       ),
     );
@@ -75,18 +71,6 @@ class PlantCardWidget extends StatelessWidget {
         fontSize: AppDimensions.fontXLarge,
         fontWeight: FontWeight.w600,
         color: AppColors.textPrimary,
-      ),
-      textAlign: TextAlign.center,
-    );
-  }
-
-  Widget _buildHealthStatus() {
-    return Text(
-      healthStatus,
-      style: GoogleFonts.poppins(
-        fontSize: AppDimensions.fontSmall,
-        color: AppColors.primary,
-        fontWeight: FontWeight.w500,
       ),
       textAlign: TextAlign.center,
     );
