@@ -41,6 +41,7 @@ class AppDimensions {
   static const double plantCardWidth = 150.0;
   static const double plantCardHeight = 190.0;
   static const double bottomNavHeight = 85.0;
+  static const double buttonHeight = 56.0;
 
   // Font Sizes
   static const double fontSmall = 12.0;
