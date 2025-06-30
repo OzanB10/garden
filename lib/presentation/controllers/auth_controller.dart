@@ -21,11 +21,13 @@ class AuthController extends StateNotifier<AuthState> {
     required String password,
   }) async {
     state = state.copyWith(isLoading: true, errorMessage: null);
+    
     try {
       final user = await loginUsecase.execute(
         email: email,
         password: password,
       );
+      
       state = state.copyWith(
         user: user,
         isLoading: false,

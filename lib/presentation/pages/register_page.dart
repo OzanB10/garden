@@ -37,27 +37,26 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
   @override
   void initState() {
     super.initState();
-    // Listen to auth state changes
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.listen(authControllerProvider, (previous, next) {
-        if (next.isAuthenticated) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const HomePage()),
-          );
-        } else if (next.errorMessage != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(next.errorMessage!),
-              backgroundColor: AppColors.alertIcon,
-            ),
-          );
-        }
-      });
-    });
   }
 
   @override
   Widget build(BuildContext context) {
+    // Listen to auth state changes
+    ref.listen(authControllerProvider, (previous, next) {
+      if (next.isAuthenticated) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+      } else if (next.errorMessage != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(next.errorMessage!),
+            backgroundColor: AppColors.alertIcon,
+          ),
+        );
+      }
+    });
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
