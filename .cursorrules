@@ -122,6 +122,202 @@ Generate code, corrections, and refactorings that comply with the basic principl
 - Break down large widgets into smaller, focused widgets
 - Utilize const constructors wherever possible to reduce rebuilds
 
+### Folder Structure & Organization
+
+#### Main Architecture Structure
+```
+lib/
+├── core/                           # Shared core functionality
+│   ├── constants/                  # App-wide constants
+│   │   ├── app_colors.dart
+│   │   ├── app_strings.dart
+│   │   └── app_dimensions.dart
+│   ├── extensions/                 # Dart/Flutter extensions
+│   │   ├── string_extensions.dart
+│   │   └── context_extensions.dart
+│   ├── services/                   # Core services
+│   │   ├── api_service.dart
+│   │   ├── storage_service.dart
+│   │   └── notification_service.dart
+│   ├── utils/                      # Utility functions
+│   │   ├── validators.dart
+│   │   ├── helpers.dart
+│   │   └── formatters.dart
+│   ├── errors/                     # Error handling
+│   │   ├── exceptions.dart
+│   │   └── failures.dart
+│   └── network/                    # Network related
+│       ├── network_info.dart
+│       └── api_endpoints.dart
+├── data/                           # Data layer for all features
+│   ├── models/                     # Data models
+│   │   ├── plant_model.dart
+│   │   ├── user_model.dart
+│   │   ├── task_model.dart
+│   │   ├── weather_model.dart
+│   │   └── house_model.dart
+│   ├── datasources/                # Data sources
+│   │   ├── plants_local_datasource.dart
+│   │   ├── plants_remote_datasource.dart
+│   │   ├── auth_local_datasource.dart
+│   │   ├── auth_remote_datasource.dart
+│   │   ├── weather_datasource.dart
+│   │   └── house_datasource.dart
+│   └── repositories/               # Repository implementations
+│       ├── plants_repository_impl.dart
+│       ├── auth_repository_impl.dart
+│       ├── weather_repository_impl.dart
+│       └── house_repository_impl.dart
+├── domain/                         # Business logic layer
+│   ├── entities/                   # Domain entities
+│   │   ├── plant_entity.dart
+│   │   ├── user_entity.dart
+│   │   ├── task_entity.dart
+│   │   ├── weather_entity.dart
+│   │   └── house_entity.dart
+│   ├── repositories/               # Repository interfaces
+│   │   ├── plants_repository.dart
+│   │   ├── auth_repository.dart
+│   │   ├── weather_repository.dart
+│   │   └── house_repository.dart
+│   └── usecases/                   # Use cases organized by feature
+│       ├── plants/
+│       │   ├── get_plants_usecase.dart
+│       │   ├── water_plant_usecase.dart
+│       │   └── add_plant_usecase.dart
+│       ├── auth/
+│       │   ├── login_usecase.dart
+│       │   ├── logout_usecase.dart
+│       │   └── register_usecase.dart
+│       ├── weather/
+│       │   └── get_weather_usecase.dart
+│       └── house/
+│           ├── get_house_info_usecase.dart
+│           └── update_house_usecase.dart
+├── presentation/                   # UI layer for all features
+│   ├── pages/                      # All app screens
+│   │   ├── home_page.dart
+│   │   ├── login_page.dart
+│   │   ├── register_page.dart
+│   │   ├── plant_detail_page.dart
+│   │   ├── add_plant_page.dart
+│   │   ├── profile_page.dart
+│   │   └── settings_page.dart
+│   ├── controllers/                # State controllers (Riverpod)
+│   │   ├── plants_controller.dart
+│   │   ├── auth_controller.dart
+│   │   ├── weather_controller.dart
+│   │   ├── tasks_controller.dart
+│   │   └── house_controller.dart
+│   ├── widgets/                    # Reusable widgets
+│   │   ├── plant_card.dart
+│   │   ├── task_item.dart
+│   │   ├── weather_widget.dart
+│   │   ├── custom_button.dart
+│   │   ├── custom_text_field.dart
+│   │   ├── loading_widget.dart
+│   │   └── error_widget.dart
+│   └── states/                     # UI state classes (Freezed)
+│       ├── plants_state.dart
+│       ├── auth_state.dart
+│       ├── weather_state.dart
+│       ├── tasks_state.dart
+│       └── house_state.dart
+├── config/                         # App configuration
+│   ├── routes/                     # Simple route management
+│   │   ├── app_routes.dart
+│   │   └── route_names.dart
+│   ├── di/                         # Dependency injection
+│   │   └── injection.dart
+│   ├── themes/                     # App theming
+│   │   ├── app_theme.dart
+│   │   ├── light_theme.dart
+│   │   └── dark_theme.dart
+│   └── environment/
+│       ├── environment.dart
+│       └── env_config.dart
+└── main.dart                       # App entry point
+```
+
+#### Folder Organization Rules
+
+1. **Layer-Based Structure**
+   - Group code by technical layers (data/domain/presentation)
+   - All features share the same layer structure
+   - Easier to navigate and maintain
+
+2. **Clean Architecture Layers**
+   - **data/**: External data sources, models, repository implementations
+   - **domain/**: Business logic, entities, repository interfaces, use cases
+   - **presentation/**: UI, controllers, states, widgets
+
+3. **File Naming Conventions**
+   - Use snake_case for all file and folder names
+   - Add suffixes to clarify purpose:
+     - `_page.dart` for pages/screens
+     - `_widget.dart` for reusable widgets
+     - `_controller.dart` for controllers
+     - `_state.dart` for state classes
+     - `_model.dart` for data models
+     - `_entity.dart` for domain entities
+     - `_repository.dart` for repository interfaces
+     - `_repository_impl.dart` for repository implementations
+     - `_usecase.dart` for use cases
+     - `_service.dart` for services
+     - `_datasource.dart` for data sources
+
+4. **Import Organization**
+   - Dart imports first
+   - Flutter imports second
+   - Third-party package imports third
+   - Project imports last
+   - Separate each group with blank line
+
+5. **Export Files**
+   - Create barrel exports for each layer
+   - Use `index.dart` for exports
+   - Example: `data/data.dart`, `domain/domain.dart`
+
+6. **Asset Organization**
+   ```
+   assets/
+   ├── images/
+   │   ├── icons/
+   │   ├── illustrations/
+   │   └── backgrounds/
+   ├── fonts/
+   └── json/
+       └── translations/
+   ```
+
+7. **Test Organization**
+   ```
+   test/
+   ├── unit/
+   │   ├── data/
+   │   ├── domain/
+   │   └── presentation/
+   ├── widget/
+   └── integration/
+   ```
+
+#### Module Dependencies Rules
+
+1. **Dependency Direction**
+   - presentation → domain ← data
+   - core can be used by all layers
+   - config provides app-wide configuration
+
+2. **Abstraction Rules**
+   - presentation depends on domain abstractions only
+   - data implements domain abstractions
+   - use dependency injection for implementations
+
+3. **Navigation Rules**
+   - Use standard Flutter Navigator 2.0
+   - Create simple route management in config/routes/
+   - Avoid complex routing packages for simplicity
+
 ### Testing
 
 - Use the standard widget testing for flutter
