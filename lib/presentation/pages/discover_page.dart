@@ -7,6 +7,7 @@ import '../../core/constants/app_strings.dart';
 import '../../data/models/plant_data.dart';
 import '../../domain/entities/plant_entity.dart';
 import '../widgets/category_chip_widget.dart';
+import '../widgets/navigation_item_widget.dart';
 import '../widgets/plant_card_widget.dart';
 
 class DiscoverPage extends StatefulWidget {
@@ -50,9 +51,8 @@ class _DiscoverPageState extends State<DiscoverPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: AppDimensions.spacing8),
               _buildHeader(),
-              const SizedBox(height: AppDimensions.spacing20),
+              const SizedBox(height: AppDimensions.spacing16),
               _buildSearchBar(),
               const SizedBox(height: AppDimensions.spacing18),
               _buildCategoriesSection(),
@@ -62,6 +62,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
           ),
         ),
       ),
+      bottomNavigationBar: _buildBottomNavigation(),
     );
   }
 
@@ -101,7 +102,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
             ),
           ],
         ),
-        const SizedBox(height: AppDimensions.spacing6),
+        const SizedBox(height: AppDimensions.spacing4),
         Padding(
           padding: const EdgeInsets.only(left: 56.0),
           child: Text(
@@ -228,6 +229,75 @@ class _DiscoverPageState extends State<DiscoverPage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildBottomNavigation() {
+    return Container(
+      height: AppDimensions.bottomNavHeight,
+      decoration: BoxDecoration(
+        color: AppColors.cardBackground,
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(AppDimensions.radiusXXLarge),
+          topRight: Radius.circular(AppDimensions.radiusXXLarge),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: AppDimensions.blurXLarge,
+            offset: AppDimensions.shadowOffsetNegative,
+          ),
+        ],
+      ),
+      child: SafeArea(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            NavigationItemWidget(
+              icon: Icons.home_rounded,
+              label: AppStrings.navHome,
+              isActive: false,
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            NavigationItemWidget(
+              icon: Icons.search_rounded,
+              label: AppStrings.navDiscover,
+              isActive: true,
+              onTap: () {
+                // Zaten keşfet sayfasındayız
+              },
+            ),
+            NavigationItemWidget(
+              icon: Icons.camera_alt_rounded,
+              label: AppStrings.navGarden,
+              isActive: false,
+              onTap: () {
+                // Garden sayfası henüz oluşturulmadı
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Bahçe sayfası yakında geliyor!'),
+                  ),
+                );
+              },
+            ),
+            NavigationItemWidget(
+              icon: Icons.person_rounded,
+              label: AppStrings.navProfile,
+              isActive: false,
+              onTap: () {
+                // Profile sayfası henüz oluşturulmadı
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Profil sayfası yakında geliyor!'),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
