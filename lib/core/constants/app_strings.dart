@@ -48,5 +48,27 @@ class AppStrings {
   static const String peaceLily = 'Barış Çiçeği';
   static const String cactus = 'Kaktüsüm';
 
+  // Auth
+  static const String loginTitle = 'Tekrar Hoş Geldin! 🌱';
+  static const String loginSubtitle = 'Yeşil dostların seni özledi';
+  static const String registerTitle = 'Yeşil Yolculuğa Başla! 🌿';
+  static const String registerSubtitle = 'Bitki bakım macerana hoş geldin';
+  static const String emailHint = 'E-posta adresin';
+  static const String passwordHint = 'Şifren';
+  static const String nameHint = 'Adın';
+  static const String confirmPasswordHint = 'Şifreni tekrarla';
+  static const String loginButton = 'Giriş Yap';
+  static const String registerButton = 'Kayıt Ol';
+  static const String noAccount = 'Hesabın yok mu?';
+  static const String hasAccount = 'Zaten hesabın var mı?';
+  static const String forgotPassword = 'Şifremi unuttum';
+  static const String orDivider = 'veya';
   
+  // Validation
+  static const String emailRequired = 'E-posta adresi gerekli';
+  static const String emailInvalid = 'Geçerli bir e-posta adresi girin';
+  static const String passwordRequired = 'Şifre gerekli';
+  static const String passwordTooShort = 'Şifre en az 6 karakter olmalı';
+  static const String nameRequired = 'Ad gerekli';
+  static const String passwordsDontMatch = 'Şifreler eşleşmiyor';
 } 
