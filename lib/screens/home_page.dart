@@ -12,25 +12,25 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FA),
+      backgroundColor: const Color(0xFFFAF7F4),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 20),
+              const SizedBox(height: 24),
               _buildHeader(),
-              const SizedBox(height: 32),
+              const SizedBox(height: 28),
               _buildWeatherCard(),
-              const SizedBox(height: 24),
+              const SizedBox(height: 32),
               _buildMyPlantsSection(),
-              const SizedBox(height: 24),
+              const SizedBox(height: 28),
               _buildTodayTasksSection(),
-              const SizedBox(height: 24),
+              const SizedBox(height: 26),
               _buildAlertsSection(),
-              const SizedBox(height: 24),
-              _buildPremiumCard(),
+              const SizedBox(height: 32),
+              _buildTipCard(),
               const SizedBox(height: 100),
             ],
           ),
@@ -48,41 +48,46 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Good Morning, Hiya',
-              style: GoogleFonts.inter(
-                fontSize: 24,
-                fontWeight: FontWeight.w600,
-                color: const Color(0xFF1F2937),
+              'Merhaba Hiya! ☀️',
+              style: GoogleFonts.poppins(
+                fontSize: 26,
+                fontWeight: FontWeight.w700,
+                color: const Color(0xFF2D3748),
               ),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 6),
             Text(
-              'Saturday, Feb 03',
-              style: GoogleFonts.inter(
+              'Bugün bitkilerinle nasıl vakit geçireceksin?',
+              style: GoogleFonts.poppins(
                 fontSize: 14,
-                color: const Color(0xFF6B7280),
+                color: const Color(0xFF718096),
+                fontWeight: FontWeight.w400,
               ),
             ),
           ],
         ),
         Container(
-          width: 48,
-          height: 48,
+          width: 52,
+          height: 52,
           decoration: BoxDecoration(
-            color: const Color(0xFF10B981),
-            borderRadius: BorderRadius.circular(24),
+            gradient: const LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Color(0xFF68D391), Color(0xFF38A169)],
+            ),
+            borderRadius: BorderRadius.circular(18),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFF10B981).withOpacity(0.3),
-                blurRadius: 8,
-                offset: const Offset(0, 4),
+                color: const Color(0xFF68D391).withOpacity(0.4),
+                blurRadius: 12,
+                offset: const Offset(0, 6),
               ),
             ],
           ),
           child: const Icon(
-            Icons.notifications_outlined,
+            Icons.favorite_rounded,
             color: Colors.white,
-            size: 24,
+            size: 26,
           ),
         ),
       ],
@@ -92,80 +97,89 @@ class _HomePageState extends State<HomePage> {
   Widget _buildWeatherCard() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(22),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xFFFFF7ED), Color(0xFFFED7AA)],
+        ),
+        borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: const Color(0xFFED8936).withOpacity(0.15),
             blurRadius: 20,
-            offset: const Offset(0, 4),
+            offset: const Offset(0, 8),
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'It\'s Sunny Out',
-                    style: GoogleFonts.inter(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: const Color(0xFF6B7280),
-                    ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Bugün hava süper! 🌤️',
+                  style: GoogleFonts.poppins(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFF9C4221),
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    '20°C',
-                    style: GoogleFonts.inter(
-                      fontSize: 48,
-                      fontWeight: FontWeight.w700,
-                      color: const Color(0xFF1F2937),
-                    ),
-                  ),
-                  Text(
-                    '+24° -10°',
-                    style: GoogleFonts.inter(
-                      fontSize: 14,
-                      color: const Color(0xFF6B7280),
-                    ),
-                  ),
-                ],
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF10B981),
-                  borderRadius: BorderRadius.circular(20),
                 ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(
-                      Icons.add,
-                      color: Colors.white,
-                      size: 16,
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      'Add',
-                      style: GoogleFonts.inter(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
+                const SizedBox(height: 8),
+                Text(
+                  '22°C',
+                  style: GoogleFonts.poppins(
+                    fontSize: 42,
+                    fontWeight: FontWeight.w800,
+                    color: const Color(0xFF9C4221),
+                  ),
                 ),
-              ),
-            ],
+                Text(
+                  'Bitkiler için ideal 🌱',
+                  style: GoogleFonts.poppins(
+                    fontSize: 13,
+                    color: const Color(0xFFC05621),
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+            decoration: BoxDecoration(
+              color: const Color(0xFF68D391),
+              borderRadius: BorderRadius.circular(22),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFF68D391).withOpacity(0.3),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.camera_alt_rounded,
+                  color: Colors.white,
+                  size: 18,
+                ),
+                const SizedBox(width: 6),
+                Text(
+                  'Fotoğraf',
+                  style: GoogleFonts.poppins(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -180,33 +194,35 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'My Plants',
-              style: GoogleFonts.inter(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-                color: const Color(0xFF1F2937),
+              'Yeşil Dostlarım 🪴',
+              style: GoogleFonts.poppins(
+                fontSize: 22,
+                fontWeight: FontWeight.w700,
+                color: const Color(0xFF2D3748),
               ),
             ),
             Text(
-              '35 plants in your garden',
-              style: GoogleFonts.inter(
+              '7 tane sevimli bitki',
+              style: GoogleFonts.poppins(
                 fontSize: 14,
-                color: const Color(0xFF6B7280),
+                color: const Color(0xFF718096),
+                fontWeight: FontWeight.w500,
               ),
             ),
           ],
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 18),
         SizedBox(
-          height: 180,
+          height: 190,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: 3,
+            itemCount: 4,
             itemBuilder: (context, index) {
               final plants = [
-                {'name': 'Snake Plant', 'health': '92% Fresh', 'image': '🌿'},
-                {'name': 'Zamioculcas', 'health': '84% Fresh', 'image': '🪴'},
-                {'name': 'Peace Lily', 'health': '96% Fresh', 'image': '🌱'},
+                {'name': 'Yılan Bitkisi', 'health': 'Yeni yaprak çıkarıyor 🌱', 'image': '🐍', 'color': const Color(0xFFE6FFFA)},
+                {'name': 'ZZ Plant', 'health': 'Biraz susuz 💧', 'image': '🌿', 'color': const Color(0xFFF0FFF4)},
+                {'name': 'Barış Çiçeği', 'health': 'Güneşten memnun ☀️', 'image': '🕊️', 'color': const Color(0xFFFFF5F5)},
+                {'name': 'Kaktüsüm', 'health': 'Büyüme modunda 📈', 'image': '🌵', 'color': const Color(0xFFFFFBF0)},
               ];
               return _buildPlantCard(plants[index]);
             },
@@ -216,69 +232,61 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildPlantCard(Map<String, String> plant) {
+  Widget _buildPlantCard(Map<String, dynamic> plant) {
     return Container(
-      width: 140,
+      width: 150,
       margin: const EdgeInsets.only(right: 16),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        color: plant['color'],
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: const Color(0xFF68D391).withOpacity(0.2),
+          width: 1.5,
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            blurRadius: 20,
-            offset: const Offset(0, 4),
+            color: Colors.black.withOpacity(0.06),
+            blurRadius: 15,
+            offset: const Offset(0, 6),
           ),
         ],
       ),
       child: Column(
         children: [
           Container(
-            width: 80,
-            height: 80,
+            width: 75,
+            height: 75,
             decoration: BoxDecoration(
-              color: const Color(0xFFF3F4F6),
-              borderRadius: BorderRadius.circular(40),
+              color: Colors.white.withOpacity(0.8),
+              borderRadius: BorderRadius.circular(20),
             ),
             child: Center(
               child: Text(
                 plant['image']!,
-                style: const TextStyle(fontSize: 32),
+                style: const TextStyle(fontSize: 34),
               ),
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 14),
           Text(
             plant['name']!,
-            style: GoogleFonts.inter(
-              fontSize: 14,
+            style: GoogleFonts.poppins(
+              fontSize: 15,
               fontWeight: FontWeight.w600,
-              color: const Color(0xFF1F2937),
+              color: const Color(0xFF2D3748),
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 4),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: 8,
-                height: 8,
-                decoration: const BoxDecoration(
-                  color: Color(0xFF10B981),
-                  shape: BoxShape.circle,
-                ),
-              ),
-              const SizedBox(width: 4),
-              Text(
-                plant['health']!,
-                style: GoogleFonts.inter(
-                  fontSize: 12,
-                  color: const Color(0xFF6B7280),
-                ),
-              ),
-            ],
+          const SizedBox(height: 6),
+          Text(
+            plant['health']!,
+            style: GoogleFonts.poppins(
+              fontSize: 12,
+              color: const Color(0xFF68D391),
+              fontWeight: FontWeight.w500,
+            ),
+            textAlign: TextAlign.center,
           ),
         ],
       ),
@@ -290,45 +298,51 @@ class _HomePageState extends State<HomePage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Today\'s Tasks',
-              style: GoogleFonts.inter(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-                color: const Color(0xFF1F2937),
+              'Bugünkü İşlerim ',
+              style: GoogleFonts.poppins(
+                fontSize: 22,
+                fontWeight: FontWeight.w700,
+                color: const Color(0xFF2D3748),
               ),
             ),
-            Text(
-              'You have 3 tasks',
-              style: GoogleFonts.inter(
-                fontSize: 14,
-                color: const Color(0xFF6B7280),
-              ),
-            ),
+            const Text('✨', style: TextStyle(fontSize: 20)),
           ],
         ),
-        const SizedBox(height: 16),
-        _buildTaskCard('Plant Watering', '20 Plant need to watering', Icons.water_drop_outlined, false),
-        const SizedBox(height: 12),
-        _buildTaskCard('Plant Misting', '15 Plant need to watering', Icons.cloud_outlined, true),
-        const SizedBox(height: 12),
-        _buildTaskCard('Fertilizing', '8 Plant need fertilizing', Icons.eco_outlined, false),
+        const SizedBox(height: 6),
+        Text(
+          'Hep birlikte bakım zamanı!',
+          style: GoogleFonts.poppins(
+            fontSize: 14,
+            color: const Color(0xFF718096),
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        const SizedBox(height: 18),
+        _buildTaskCard('ZZ Plant\'ime su ver 💧', 'İki gündür bekliyor, susadı galiba', Icons.water_drop_rounded, false),
+        const SizedBox(height: 14),
+        _buildTaskCard('Yaprakları temizle ✨', 'Parlak olsunlar istiyorum', Icons.cleaning_services_rounded, true),
+        const SizedBox(height: 14),
+        _buildTaskCard('Gübre ver 🌱', 'Büyüme zamanı geldi sanırım', Icons.eco_rounded, false),
       ],
     );
   }
 
   Widget _buildTaskCard(String title, String subtitle, IconData icon, bool isCompleted) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        color: isCompleted ? const Color(0xFFF0FFF4) : Colors.white,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(
+          color: isCompleted ? const Color(0xFF68D391).withOpacity(0.3) : const Color(0xFFE2E8F0),
+          width: 1.5,
+        ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.04),
-            blurRadius: 20,
+            blurRadius: 12,
             offset: const Offset(0, 4),
           ),
         ],
@@ -336,15 +350,16 @@ class _HomePageState extends State<HomePage> {
       child: Row(
         children: [
           Container(
-            width: 48,
-            height: 48,
+            width: 50,
+            height: 50,
             decoration: BoxDecoration(
-              color: isCompleted ? const Color(0xFF10B981) : const Color(0xFFF3F4F6),
-              borderRadius: BorderRadius.circular(12),
+              color: isCompleted ? const Color(0xFF68D391) : const Color(0xFFF7FAFC),
+              borderRadius: BorderRadius.circular(15),
             ),
             child: Icon(
-              isCompleted ? Icons.check : icon,
-              color: isCompleted ? Colors.white : const Color(0xFF6B7280),
+              isCompleted ? Icons.check_circle_rounded : icon,
+              color: isCompleted ? Colors.white : const Color(0xFF718096),
+              size: 24,
             ),
           ),
           const SizedBox(width: 16),
@@ -354,19 +369,20 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Text(
                   title,
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.poppins(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: const Color(0xFF1F2937),
+                    color: const Color(0xFF2D3748),
                     decoration: isCompleted ? TextDecoration.lineThrough : null,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   subtitle,
-                  style: GoogleFonts.inter(
-                    fontSize: 14,
-                    color: const Color(0xFF6B7280),
+                  style: GoogleFonts.poppins(
+                    fontSize: 13,
+                    color: const Color(0xFF718096),
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
               ],
@@ -378,72 +394,79 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildAlertsSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Alerts',
-          style: GoogleFonts.inter(
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-            color: const Color(0xFF1F2937),
-          ),
-        ),
-        const SizedBox(height: 16),
-        Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: const Color(0xFFFEF3C7),
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: const Color(0xFFF59E0B), width: 1),
-          ),
-          child: Row(
-            children: [
-              const Icon(
-                Icons.warning_amber_outlined,
-                color: Color(0xFFF59E0B),
-                size: 24,
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Important',
-                      style: GoogleFonts.inter(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: const Color(0xFFF59E0B),
-                      ),
-                    ),
-                    Text(
-                      'Zamioculcas need your attention to cure',
-                      style: GoogleFonts.inter(
-                        fontSize: 14,
-                        color: const Color(0xFF92400E),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildPremiumCard() {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Color(0xFF1F2937), Color(0xFF374151)],
+          colors: [Color(0xFFFFF5F5), Color(0xFFFED7D7)],
         ),
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: const Color(0xFFF56565).withOpacity(0.2), width: 1),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 48,
+            height: 48,
+            decoration: BoxDecoration(
+              color: const Color(0xFFF56565).withOpacity(0.1),
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: const Icon(
+              Icons.favorite_border_rounded,
+              color: Color(0xFFF56565),
+              size: 24,
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'ZZ Plant\'in sana mesajı var! 💌',
+                  style: GoogleFonts.poppins(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFF742A2A),
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  '"Biraz su içebilir miyim? Susadım galiba 🥺"',
+                  style: GoogleFonts.poppins(
+                    fontSize: 14,
+                    color: const Color(0xFF9B2C2C),
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTipCard() {
+    return Container(
+      padding: const EdgeInsets.all(22),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xFF667EEA), Color(0xFF764BA2)],
+        ),
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF667EEA).withOpacity(0.3),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
+          ),
+        ],
       ),
       child: Row(
         children: [
@@ -451,38 +474,30 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Try Premium Features',
-                  style: GoogleFonts.inter(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                  ),
+                Row(
+                  children: [
+                    const Text('💡', style: TextStyle(fontSize: 24)),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Günün İpucu',
+                      style: GoogleFonts.poppins(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Access to all of our premium features',
-                  style: GoogleFonts.inter(
+                  'Bitkilerinin yapraklarını hafta da bir kez nemli bezle sil. Daha iyi nefes alabilirler! 🌿',
+                  style: GoogleFonts.poppins(
                     fontSize: 14,
-                    color: const Color(0xFFD1D5DB),
+                    color: Colors.white.withOpacity(0.9),
+                    height: 1.5,
                   ),
                 ),
               ],
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-            decoration: BoxDecoration(
-              color: const Color(0xFF10B981),
-              borderRadius: BorderRadius.circular(25),
-            ),
-            child: Text(
-              'Get Now',
-              style: GoogleFonts.inter(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-              ),
             ),
           ),
         ],
@@ -492,9 +507,13 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildBottomNavigation() {
     return Container(
-      height: 90,
+      height: 85,
       decoration: BoxDecoration(
         color: Colors.white,
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(24),
+          topRight: Radius.circular(24),
+        ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.08),
@@ -507,10 +526,10 @@ class _HomePageState extends State<HomePage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _buildNavItem(Icons.home_filled, 'Home', true),
-            _buildNavItem(Icons.search_outlined, 'Diagnose', false),
-            _buildNavItem(Icons.camera_alt_outlined, 'My Garden', false),
-            _buildNavItem(Icons.person_outline, 'Profile', false),
+            _buildNavItem(Icons.home_rounded, 'Ana Sayfa', true),
+            _buildNavItem(Icons.search_rounded, 'Keşfet', false),
+            _buildNavItem(Icons.camera_alt_rounded, 'Bahçem', false),
+            _buildNavItem(Icons.person_rounded, 'Profil', false),
           ],
         ),
       ),
@@ -523,16 +542,16 @@ class _HomePageState extends State<HomePage> {
       children: [
         Icon(
           icon,
-          color: isActive ? const Color(0xFF10B981) : const Color(0xFF9CA3AF),
-          size: 24,
+          color: isActive ? const Color(0xFF68D391) : const Color(0xFFA0AEC0),
+          size: 26,
         ),
         const SizedBox(height: 4),
         Text(
           label,
-          style: GoogleFonts.inter(
+          style: GoogleFonts.poppins(
             fontSize: 12,
             fontWeight: FontWeight.w500,
-            color: isActive ? const Color(0xFF10B981) : const Color(0xFF9CA3AF),
+            color: isActive ? const Color(0xFF68D391) : const Color(0xFFA0AEC0),
           ),
         ),
       ],
