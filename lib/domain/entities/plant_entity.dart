@@ -27,11 +27,15 @@ class PlantEntity {
   final String emoji;
   final PlantCategory category;
   final PlantType type;
-  final String? careInstructions;
+  final String family;
+  final String soilType;
+  final String idealTemperature;
+  final int wateringIntervalDays;
+  final String description;
+  final String? imageUrl;
   final DateTime? lastWatered;
   final DateTime? nextWateringDate;
   final bool isFavorite;
-  final String? imageUrl;
 
   const PlantEntity({
     required this.id,
@@ -39,12 +43,24 @@ class PlantEntity {
     required this.emoji,
     required this.category,
     required this.type,
-    this.careInstructions,
+    required this.family,
+    required this.soilType,
+    required this.idealTemperature,
+    required this.wateringIntervalDays,
+    required this.description,
+    this.imageUrl,
     this.lastWatered,
     this.nextWateringDate,
     this.isFavorite = false,
-    this.imageUrl,
   });
+
+  String get careInstructions {
+    return 'Familya: $family\n'
+        'Toprak Türü: $soilType\n'
+        'İdeal Sıcaklık: $idealTemperature°C\n'
+        'Sulama Aralığı: $wateringIntervalDays günde bir\n\n'
+        'Açıklama: $description';
+  }
 
   PlantEntity copyWith({
     String? id,
@@ -52,11 +68,15 @@ class PlantEntity {
     String? emoji,
     PlantCategory? category,
     PlantType? type,
-    String? careInstructions,
+    String? family,
+    String? soilType,
+    String? idealTemperature,
+    int? wateringIntervalDays,
+    String? description,
+    String? imageUrl,
     DateTime? lastWatered,
     DateTime? nextWateringDate,
     bool? isFavorite,
-    String? imageUrl,
   }) {
     return PlantEntity(
       id: id ?? this.id,
@@ -64,11 +84,15 @@ class PlantEntity {
       emoji: emoji ?? this.emoji,
       category: category ?? this.category,
       type: type ?? this.type,
-      careInstructions: careInstructions ?? this.careInstructions,
+      family: family ?? this.family,
+      soilType: soilType ?? this.soilType,
+      idealTemperature: idealTemperature ?? this.idealTemperature,
+      wateringIntervalDays: wateringIntervalDays ?? this.wateringIntervalDays,
+      description: description ?? this.description,
+      imageUrl: imageUrl ?? this.imageUrl,
       lastWatered: lastWatered ?? this.lastWatered,
       nextWateringDate: nextWateringDate ?? this.nextWateringDate,
       isFavorite: isFavorite ?? this.isFavorite,
-      imageUrl: imageUrl ?? this.imageUrl,
     );
   }
 } 
