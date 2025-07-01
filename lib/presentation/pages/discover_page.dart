@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_dimensions.dart';
 import '../../core/constants/app_strings.dart';
-import '../../data/models/plant_data.dart';
+import '../../core/services/plant_service.dart';
 import '../../domain/entities/plant_entity.dart';
 import '../widgets/category_chip_widget.dart';
 import '../widgets/navigation_item_widget.dart';
@@ -18,28 +18,96 @@ class DiscoverPage extends StatefulWidget {
 }
 
 class _DiscoverPageState extends State<DiscoverPage> {
-  String selectedCategory = 'Tümü';
+  final PlantService _plantService = PlantService();
+  List<PlantEntity> _allPlants = [];
+  List<PlantEntity> _filteredPlants = [];
+  PlantCategory? _selectedCategory;
+  bool _isLoading = true;
+  String _searchQuery = '';
+  final TextEditingController _searchController = TextEditingController();
   
-  final categories = [
-    {'title': 'Tümü', 'emoji': '🌿'},
-    {'title': 'Meyveler', 'emoji': '🍎'},
-    {'title': 'Sebzeler', 'emoji': '🥕'},
-    {'title': 'Çiçekler', 'emoji': '🌸'},
-    {'title': 'Otlar', 'emoji': '🌱'},
-    {'title': 'Sukulentler', 'emoji': '🌵'},
-    {'title': 'Ağaçlar', 'emoji': '🌳'},
-  ];
+  // Kategori renkleri
+  final Map<PlantCategory, Color> _categoryColors = {
+    PlantCategory.fruits: const Color(0xFFFFF3E0),
+    PlantCategory.vegetables: const Color(0xFFE8F5E8),
+    PlantCategory.flowers: const Color(0xFFFFF0F5),
+    PlantCategory.herbs: const Color(0xFFE0F2F1),
+    PlantCategory.succulents: const Color(0xFFE6F3E6),
+    PlantCategory.trees: const Color(0xFFE8F5E8),
+  };
 
-  final plants = [
-    {'name': 'Gül', 'emoji': '🌹', 'category': 'Çiçekler', 'color': const Color(0xFFFFF0F5)},
-    {'name': 'Domates', 'emoji': '🍅', 'category': 'Sebzeler', 'color': const Color(0xFFE8F5E8)},
-    {'name': 'Fesleğen', 'emoji': '🌿', 'category': 'Otlar', 'color': const Color(0xFFE0F2F1)},
-    {'name': 'Elma Ağacı', 'emoji': '🍎', 'category': 'Meyveler', 'color': const Color(0xFFFFF3E0)},
-    {'name': 'Lavanta', 'emoji': '💜', 'category': 'Otlar', 'color': const Color(0xFFE0F2F1)},
-    {'name': 'Kaktüs', 'emoji': '🌵', 'category': 'Sukulentler', 'color': const Color(0xFFE6F3E6)},
-    {'name': 'Nane', 'emoji': '🌱', 'category': 'Otlar', 'color': const Color(0xFFE0F2F1)},
-    {'name': 'Çilek', 'emoji': '🍓', 'category': 'Meyveler', 'color': const Color(0xFFFFF3E0)},
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _loadPlants();
+    _searchController.addListener(_onSearchChanged);
+  }
+
+  @override
+  void dispose() {
+    _searchController.removeListener(_onSearchChanged);
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _onSearchChanged() {
+    setState(() {
+      _searchQuery = _searchController.text.toLowerCase();
+      _filterPlants();
+    });
+  }
+
+  Future<void> _loadPlants() async {
+    try {
+      final plants = await _plantService.getAllPlants();
+      setState(() {
+        _allPlants = plants;
+        _filteredPlants = plants;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Bitkiler yüklenirken hata oluştu: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  void _filterPlants() {
+    List<PlantEntity> filtered = _allPlants;
+    
+    // Kategori filtresi
+    if (_selectedCategory != null) {
+      filtered = filtered.where((plant) => plant.category == _selectedCategory).toList();
+    }
+    
+    // Arama filtresi
+    if (_searchQuery.isNotEmpty) {
+      filtered = filtered.where((plant) => 
+        plant.name.toLowerCase().contains(_searchQuery) ||
+        plant.family.toLowerCase().contains(_searchQuery) ||
+        plant.description.toLowerCase().contains(_searchQuery)
+      ).toList();
+    }
+    
+    setState(() {
+      _filteredPlants = filtered;
+    });
+  }
+
+  void _onCategorySelected(PlantCategory? category) {
+    setState(() {
+      _selectedCategory = category;
+      _filterPlants();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -139,6 +207,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
           const SizedBox(width: AppDimensions.spacing12),
           Expanded(
             child: TextField(
+              controller: _searchController,
               decoration: InputDecoration(
                 hintText: 'Bitki ara...',
                 hintStyle: GoogleFonts.poppins(
@@ -149,12 +218,25 @@ class _DiscoverPageState extends State<DiscoverPage> {
               ),
             ),
           ),
+          if (_searchQuery.isNotEmpty)
+            GestureDetector(
+              onTap: () {
+                _searchController.clear();
+              },
+              child: Icon(
+                Icons.clear_rounded,
+                color: AppColors.textSecondary,
+                size: AppDimensions.iconMedium,
+              ),
+            ),
         ],
       ),
     );
   }
 
   Widget _buildCategoriesSection() {
+    final categories = [null, ...PlantCategory.values];
+    
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -175,14 +257,10 @@ class _DiscoverPageState extends State<DiscoverPage> {
             itemBuilder: (context, index) {
               final category = categories[index];
               return CategoryChipWidget(
-                title: category['title'] as String,
-                emoji: category['emoji'] as String,
-                isSelected: selectedCategory == category['title'],
-                onTap: () {
-                  setState(() {
-                    selectedCategory = category['title'] as String;
-                  });
-                },
+                title: category?.displayName ?? 'Tümü',
+                emoji: category?.emoji ?? '🌿',
+                isSelected: _selectedCategory == category,
+                onTap: () => _onCategorySelected(category),
               );
             },
           ),
@@ -192,16 +270,48 @@ class _DiscoverPageState extends State<DiscoverPage> {
   }
 
   Widget _buildPlantsGrid() {
-    final filteredPlants = selectedCategory == 'Tümü' 
-        ? plants 
-        : plants.where((plant) => plant['category'] == selectedCategory).toList();
+    if (_isLoading) {
+      return const Expanded(
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
+    if (_filteredPlants.isEmpty) {
+      return Expanded(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                '🔍',
+                style: GoogleFonts.poppins(fontSize: 48),
+              ),
+              const SizedBox(height: AppDimensions.spacing16),
+              Text(
+                _searchQuery.isNotEmpty 
+                    ? 'Aradığınız bitki bulunamadı'
+                    : 'Bu kategoride bitki bulunamadı',
+                style: GoogleFonts.poppins(
+                  fontSize: AppDimensions.fontLarge,
+                  color: AppColors.textSecondary,
+                  fontWeight: FontWeight.w500,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      );
+    }
 
     return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Bitkiler (${filteredPlants.length})',
+            'Bitkiler (${_filteredPlants.length})',
             style: GoogleFonts.poppins(
               fontSize: AppDimensions.fontHeading,
               fontWeight: FontWeight.w600,
@@ -217,15 +327,175 @@ class _DiscoverPageState extends State<DiscoverPage> {
                 crossAxisSpacing: AppDimensions.spacing12,
                 mainAxisSpacing: AppDimensions.spacing12,
               ),
-              itemCount: filteredPlants.length,
+              itemCount: _filteredPlants.length,
               itemBuilder: (context, index) {
-                final plant = filteredPlants[index];
-                return PlantCardWidget(
-                  plantName: plant['name'] as String,
-                  emoji: plant['emoji'] as String,
-                  backgroundColor: plant['color'] as Color,
+                final plant = _filteredPlants[index];
+                return GestureDetector(
+                  onTap: () => _showPlantDetails(plant),
+                  child: PlantCardWidget(
+                    plantName: plant.name,
+                    emoji: plant.emoji,
+                    backgroundColor: _categoryColors[plant.category] ?? const Color(0xFFF5F5F5),
+                  ),
                 );
               },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showPlantDetails(PlantEntity plant) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        height: MediaQuery.of(context).size.height * 0.8,
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(AppDimensions.radiusXXLarge),
+            topRight: Radius.circular(AppDimensions.radiusXXLarge),
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(AppDimensions.paddingHorizontal),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: AppDimensions.spacing12),
+              Center(
+                child: Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: AppColors.textSecondary.withOpacity(0.3),
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ),
+              const SizedBox(height: AppDimensions.spacing24),
+              Row(
+                children: [
+                  Container(
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      color: _categoryColors[plant.category] ?? const Color(0xFFF5F5F5),
+                      borderRadius: BorderRadius.circular(AppDimensions.radiusLarge),
+                    ),
+                    child: Center(
+                      child: Text(
+                        plant.emoji,
+                        style: const TextStyle(fontSize: 32),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: AppDimensions.spacing16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          plant.name,
+                          style: GoogleFonts.poppins(
+                            fontSize: AppDimensions.fontXXLarge,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                        Text(
+                          plant.category.displayName,
+                          style: GoogleFonts.poppins(
+                            fontSize: AppDimensions.fontLarge,
+                            color: AppColors.textSecondary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: AppDimensions.spacing24),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildInfoCard('🔬 Familya', plant.family),
+                      const SizedBox(height: AppDimensions.spacing12),
+                      _buildInfoCard('🌡️ İdeal Sıcaklık', '${plant.idealTemperature}°C'),
+                      const SizedBox(height: AppDimensions.spacing12),
+                      _buildInfoCard('💧 Sulama Aralığı', '${plant.wateringIntervalDays} günde bir'),
+                      const SizedBox(height: AppDimensions.spacing12),
+                      _buildInfoCard('🌱 Toprak Türü', plant.soilType),
+                      const SizedBox(height: AppDimensions.spacing16),
+                      Text(
+                        'Açıklama',
+                        style: GoogleFonts.poppins(
+                          fontSize: AppDimensions.fontHeading,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.textPrimary,
+                        ),
+                      ),
+                      const SizedBox(height: AppDimensions.spacing12),
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(AppDimensions.spacing16),
+                        decoration: BoxDecoration(
+                          color: AppColors.background,
+                          borderRadius: BorderRadius.circular(AppDimensions.radiusLarge),
+                        ),
+                        child: Text(
+                          plant.description,
+                          style: GoogleFonts.poppins(
+                            fontSize: AppDimensions.fontLarge,
+                            color: AppColors.textPrimary,
+                            height: 1.6,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInfoCard(String title, String value) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(AppDimensions.spacing16),
+      decoration: BoxDecoration(
+        color: AppColors.background,
+        borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+        border: Border.all(
+          color: AppColors.primary.withOpacity(0.1),
+          width: 1,
+        ),
+      ),
+      child: Row(
+        children: [
+          Text(
+            title,
+            style: GoogleFonts.poppins(
+              fontSize: AppDimensions.fontMedium,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textPrimary,
+            ),
+          ),
+          const Spacer(),
+          Text(
+            value,
+            style: GoogleFonts.poppins(
+              fontSize: AppDimensions.fontMedium,
+              color: AppColors.textSecondary,
             ),
           ),
         ],
