@@ -71,4 +71,8 @@ flutter:
   
   uses-material-design: true
 
+  # Assets
+  assets:
+    - assets/json/plants.json
+
   
